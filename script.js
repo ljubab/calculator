@@ -76,25 +76,6 @@ function dotButtonPressed(btn) {
     });
 }
 
-function operationButtonPressed(btn) {
-    let pattern = "ope-";
-    let operationPatternLocation = btn.id.search(pattern);
-
-    if(operationPatternLocation === -1) return;
-
-    btn.addEventListener("click", (e) => {
-        if(secondNumber !== undefined) {
-            throw "implement this later :P";
-        }
-
-        currentOperation = btn.id.slice(operationPatternLocation + pattern.length);
-        secondNumber = "";
-        currentNum = "";
-        calculatorDisplay.textContent = currentNum;
-    });
-
-}
-
 function addition(a, b) {
     return `${(+a) + (+b)}`;
 }
@@ -111,6 +92,59 @@ function multiplication(a, b) {
     return `${(+a) * (+b)}`;
 }
 
+function operate() {
+    let isThereTwoNumbers = true;
+
+    switch(currentOperation) {
+        case "addition":
+            currentNum = addition(firstNumber, secondNumber);
+            break;
+        case "subtraction":
+            currentNum = subtraction(firstNumber, secondNumber);
+            break;
+        case "division":
+            currentNum = division(firstNumber, secondNumber);
+            break;
+        case "multiplication":
+            currentNum = multiplication(firstNumber, secondNumber);
+            break;
+        default:
+            isThereTwoNumbers = false;
+            break;
+    }
+
+    if(!isThereTwoNumbers) return;
+    
+    firstNumber = currentNum;
+    secondNumber = undefined;
+
+    calculatorDisplay.textContent = currentNum;
+}
+
+function operationButtonPressed(btn) {
+    let pattern = "ope-";
+    let operationPatternLocation = btn.id.search(pattern);
+
+    if(operationPatternLocation === -1) return;
+
+    btn.addEventListener("click", (e) => {
+        let isSecondNumberUndefined = (secondNumber === undefined);
+        if(!isSecondNumberUndefined) {
+            operate();
+        }
+
+        currentOperation = btn.id.slice(operationPatternLocation + pattern.length);
+        secondNumber = "";
+        currentNum = "";
+        calculatorDisplay.textContent = currentNum;
+
+        if(!isSecondNumberUndefined) {
+            calculatorDisplay.textContent = firstNumber;
+        }
+    });
+
+}
+
 function equalButtonPressed(btn) {
     let pattern = "equal";
     let equalPatternLocation = btn.id.search(pattern);
@@ -118,32 +152,7 @@ function equalButtonPressed(btn) {
     if(equalPatternLocation === -1) return;
 
     btn.addEventListener("click", (e) => {
-        let isThereTwoNumbers = true;
-
-        switch(currentOperation) {
-            case "addition":
-                currentNum = addition(firstNumber, secondNumber);
-                break;
-            case "subtraction":
-                currentNum = subtraction(firstNumber, secondNumber);
-                break;
-            case "division":
-                currentNum = division(firstNumber, secondNumber);
-                break;
-            case "multiplication":
-                currentNum = multiplication(firstNumber, secondNumber);
-                break;
-            default:
-                isThereTwoNumbers = false;
-                break;
-        }
-
-        if(!isThereTwoNumbers) return;
-        
-        firstNumber = currentNum;
-        secondNumber = undefined;
-
-        calculatorDisplay.textContent = currentNum;
+        operate();
     });
 }
 
