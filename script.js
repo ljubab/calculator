@@ -8,6 +8,8 @@ let currentNum = "";
 let firstNumber = undefined;
 let secondNumber = undefined;
 
+let currentOperation = undefined;
+
 function updateNumbers() {
     if(secondNumber === undefined) {
         firstNumber = currentNum;
@@ -74,9 +76,82 @@ function dotButtonPressed(btn) {
     });
 }
 
+function operationButtonPressed(btn) {
+    let pattern = "ope-";
+    let operationPatternLocation = btn.id.search(pattern);
+
+    if(operationPatternLocation === -1) return;
+
+    btn.addEventListener("click", (e) => {
+        if(secondNumber !== undefined) {
+            throw "implement this later :P";
+        }
+
+        currentOperation = btn.id.slice(operationPatternLocation + pattern.length);
+        secondNumber = "";
+        currentNum = "";
+        calculatorDisplay.textContent = currentNum;
+    });
+
+}
+
+function addition(a, b) {
+    return `${(+a) + (+b)}`;
+}
+
+function subtraction(a, b) {
+    return `${(+a) - (+b)}`;
+}
+
+function division(a, b) {
+    return `${(+a) / (+b)}`;
+}
+
+function multiplication(a, b) {
+    return `${(+a) * (+b)}`;
+}
+
+function equalButtonPressed(btn) {
+    let pattern = "equal";
+    let equalPatternLocation = btn.id.search(pattern);
+
+    if(equalPatternLocation === -1) return;
+
+    btn.addEventListener("click", (e) => {
+        let isThereTwoNumbers = true;
+
+        switch(currentOperation) {
+            case "addition":
+                currentNum = addition(firstNumber, secondNumber);
+                break;
+            case "subtraction":
+                currentNum = subtraction(firstNumber, secondNumber);
+                break;
+            case "division":
+                currentNum = division(firstNumber, secondNumber);
+                break;
+            case "multiplication":
+                currentNum = multiplication(firstNumber, secondNumber);
+                break;
+            default:
+                isThereTwoNumbers = false;
+                break;
+        }
+
+        if(!isThereTwoNumbers) return;
+        
+        firstNumber = currentNum;
+        secondNumber = undefined;
+
+        calculatorDisplay.textContent = currentNum;
+    });
+}
+
 Array.from(allButtons).forEach(btn => {
     numberButtonPressed(btn);
     clearButtonPressed(btn);
     acButtonPressed(btn);
     dotButtonPressed(btn);
+    operationButtonPressed(btn);
+    equalButtonPressed(btn);
 });
