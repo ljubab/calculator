@@ -46,7 +46,7 @@ function clearButtonPressed(btn) {
 }
 
 function acButtonPressed(btn) {
-    let pattern = "ac";
+    let pattern = "all-clear";
     let acPatternLocation = btn.id.search(pattern);
 
     if(acPatternLocation === -1) return;
@@ -95,6 +95,8 @@ function multiplication(a, b) {
 function operate() {
     let isThereTwoNumbers = true;
 
+    console.log(currentOperation);
+
     switch(currentOperation) {
         case "addition":
             currentNum = addition(firstNumber, secondNumber);
@@ -130,10 +132,12 @@ function operationButtonPressed(btn) {
     btn.addEventListener("click", (e) => {
         let isSecondNumberUndefined = (secondNumber === undefined);
         if(!isSecondNumberUndefined) {
+            console.log("operated");
             operate();
         }
 
         currentOperation = btn.id.slice(operationPatternLocation + pattern.length);
+        console.log(currentOperation);
         secondNumber = "";
         currentNum = "";
         calculatorDisplay.textContent = currentNum;
