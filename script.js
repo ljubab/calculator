@@ -85,7 +85,12 @@ function subtraction(a, b) {
 }
 
 function division(a, b) {
-    return `${(+a) / (+b)}`;
+    let value = (+a) / (+b);
+    if(!isFinite(value)) {
+        return `You cannot divide with 0`;
+    } else {
+        return `${(+a) / (+b)}`;
+    }
 }
 
 function multiplication(a, b) {
