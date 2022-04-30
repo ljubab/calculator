@@ -11,6 +11,8 @@ table {
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
+    width: 300px;
+    table-layout: fixed;
 }
 
 button {
@@ -37,6 +39,9 @@ tr .calculator-display {
     border: 5px solid black;
     background-color: green;
     height: 78px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 body {
